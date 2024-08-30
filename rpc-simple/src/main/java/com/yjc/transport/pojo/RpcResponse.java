@@ -33,4 +33,11 @@ public class RpcResponse implements Serializable {
         response.setMessage(rpcResponseCodeEnum.getMessage());
         return response;
     }
+
+    public static  RpcResponse fail() {
+        RpcResponse response = new RpcResponse();
+        response.setCode(RpcResponseCodeEnum.FAIL.getCode());
+        response.setMessage(RpcResponseCodeEnum.FAIL.getMessage());
+        return response;
+    }
 }

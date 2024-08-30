@@ -8,4 +8,5 @@ import java.lang.annotation.*;
 @Inherited
 public @interface RpcService {
     String name() default "";
+    boolean canRetry() default false;
 }

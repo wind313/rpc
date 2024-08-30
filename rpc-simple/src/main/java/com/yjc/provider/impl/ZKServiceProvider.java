@@ -48,7 +48,7 @@ public class ZKServiceProvider implements ServiceProvider {
         try {
             hostAddress = InetAddress.getLocalHost().getHostAddress();
             this.addService(rpcConfig);
-            this.serviceRegistry.registerService(rpcConfig.getRpcServiceName(),new InetSocketAddress(hostAddress, RpcServer.PORT));
+            this.serviceRegistry.registerService(rpcConfig.getRpcServiceName(),new InetSocketAddress(hostAddress, RpcServer.PORT),rpcConfig.isCanRetry());
         } catch (UnknownHostException e) {
             log.error("获取本地主机地址失败",e);
         }

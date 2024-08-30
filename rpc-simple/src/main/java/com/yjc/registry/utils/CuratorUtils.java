@@ -26,6 +26,8 @@ public class CuratorUtils {
     private static final Map<String,List<String>> SERVICE_ADDRESS_MAP = new ConcurrentHashMap<>();
     private static final Set<String> REGISTERED_PATH_SET = ConcurrentHashMap.newKeySet();
     public static final String ZK_REGISTER_ROOT_PATH = "/my/rpc";
+
+    public static final String RETRY = "canRetry";
     public static CuratorFramework getZkClient(){
         Properties properties = PropertiesFileUtil.readPropertiesFile(RpcConfigEnum.RPC_CONFIG_PATH.getPropertyValue());
         String zookeeper = DEFAULT_ZOOKEEPER_ADDRESS;

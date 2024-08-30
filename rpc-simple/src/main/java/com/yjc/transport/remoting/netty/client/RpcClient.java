@@ -15,6 +15,7 @@ import com.yjc.transport.pojo.RpcRequest;
 import com.yjc.registry.ServiceDiscovery;
 import java.net.InetSocketAddress;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -26,6 +27,9 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.xml.ws.Response;
+
 @Slf4j
 public class RpcClient implements RpcSender {
     private final ServiceDiscovery serviceDiscovery;
@@ -70,7 +74,7 @@ public class RpcClient implements RpcSender {
         return completableFuture.get();
     }
     @Override
-    public Object send(RpcRequest rpcRequest) {
+    public RpcResponse send(RpcRequest rpcRequest) throws ExecutionException, InterruptedException {
         CompletableFuture<RpcResponse> resultFuture = new CompletableFuture<>();
         InetSocketAddress inetSocketAddress = serviceDiscovery.lookupService(rpcRequest);
         Channel channel = getChannel(inetSocketAddress);
@@ -94,7 +98,7 @@ public class RpcClient implements RpcSender {
         } else {
             throw new IllegalStateException();
         }
-        return resultFuture;
+        return resultFuture.get();
     }
     public Channel getChannel(InetSocketAddress inetSocketAddress) {
         Channel channel = channelProvider.get(inetSocketAddress);

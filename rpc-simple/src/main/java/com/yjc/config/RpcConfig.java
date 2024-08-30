@@ -8,6 +8,7 @@ import lombok.Getter;
 public class RpcConfig {
     private String name="";
     private Object service;
+    private boolean canRetry = false;
 
     public String getServiceName(){
         return this.service.getClass().getInterfaces()[0].getCanonicalName();

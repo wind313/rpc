@@ -43,7 +43,7 @@ public class RpcServerHandler extends ChannelInboundHandlerAdapter {
                         RpcResponse response = RpcResponse.success(result, rpcRequest.getRequestId());
                         rpcMessage.setData(response);
                     } else {
-                        RpcResponse response = RpcResponse.fail(RpcResponseCodeEnum.FAIL);
+                        RpcResponse response = RpcResponse.fail();
                         rpcMessage.setData(response);
                         log.error("当前不能写，消息失效");
                     }

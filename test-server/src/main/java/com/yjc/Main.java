@@ -1,7 +1,6 @@
 package com.yjc;
 
 import com.yjc.annotation.RpcScan;
-import com.yjc.config.RpcConfig;
 import com.yjc.transport.remoting.netty.server.RpcServer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 

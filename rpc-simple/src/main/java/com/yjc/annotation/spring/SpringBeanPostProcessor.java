@@ -35,7 +35,7 @@ public class SpringBeanPostProcessor implements BeanPostProcessor {
         if(bean.getClass().isAnnotationPresent(RpcService.class)){
             log.info("扫描到[{}]被RpcService注解",bean.getClass().getName());
             RpcService annotation = bean.getClass().getAnnotation(RpcService.class);
-            RpcConfig rpcConfig = RpcConfig.builder().name(annotation.name()).service(bean).build();
+            RpcConfig rpcConfig = RpcConfig.builder().name(annotation.name()).service(bean).canRetry(annotation.canRetry()).build();
             serviceProvider.publishService(rpcConfig);
 
         }
