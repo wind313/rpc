@@ -27,9 +27,9 @@ public class GuavaRetry {
         try {
             return retryer.call(()->rpcSender.send(rpcRequest));
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
-        return RpcResponse.fail();
+        return RpcResponse.fail(rpcRequest.getRequestId());
     }
 
 }

@@ -37,12 +37,10 @@ public class RpcServerHandler extends ChannelInboundHandlerAdapter {
                     rpcMessage.setMessageType(RpcConstants.RESPONSE_TYPE);
                     RpcRequest rpcRequest = (RpcRequest) ((RpcMessage) msg).getData();
                     RpcResponse result = rpcRequestHandler.handle(rpcRequest);
-                    result.setRequestId(rpcRequest.getRequestId());
-                    log.warn(result.toString());
                     if (ctx.channel().isActive() && ctx.channel().isWritable()) {
                         rpcMessage.setData(result);
                     } else {
-                        RpcResponse response = RpcResponse.fail();
+                        RpcResponse response = RpcResponse.fail(rpcRequest.getRequestId());
                         rpcMessage.setData(response);
                         log.error("当前不能写，消息失效");
                     }

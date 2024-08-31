@@ -29,12 +29,11 @@ public class RpcRequestHandler {
         RateLimit rateLimit = rateLimitProvider.getRateLimit(interfaceName);
         if (!rateLimit.getToken()){
             log.warn("服务限流");
-            return RpcResponse.fail(RpcResponseCodeEnum.RATE_LIMIT);
+            return RpcResponse.fail(RpcResponseCodeEnum.RATE_LIMIT,rpcRequest.getRequestId());
         }
         Object service = serviceProvider.getService(rpcRequest.getRpcServiceName());
         RpcResponse response = invokeMethod(rpcRequest, service);
         return response;
-
     }
 
     private RpcResponse invokeMethod(RpcRequest rpcRequest, Object service) {
@@ -44,7 +43,7 @@ public class RpcRequestHandler {
             result = method.invoke(service,rpcRequest.getParameters());
             log.info("得到结果:{}", result);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | IllegalArgumentException e) {
-            throw new RuntimeException(e.getMessage(),e);
+            return RpcResponse.fail(RpcResponseCodeEnum.FAIL, rpcRequest.getRequestId());
         }
         return RpcResponse.success(result, rpcRequest.getRequestId());
     }

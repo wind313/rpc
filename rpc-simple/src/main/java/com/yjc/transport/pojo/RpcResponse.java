@@ -31,17 +31,19 @@ public class RpcResponse implements Serializable {
 
         return response;
     }
-    public static  RpcResponse fail(RpcResponseCodeEnum rpcResponseCodeEnum) {
+    public static  RpcResponse fail(RpcResponseCodeEnum rpcResponseCodeEnum, String requestId) {
         RpcResponse response = new RpcResponse();
         response.setCode(rpcResponseCodeEnum.getCode());
         response.setMessage(rpcResponseCodeEnum.getMessage());
+        response.setRequestId(requestId);
         return response;
     }
 
-    public static  RpcResponse fail() {
+    public static  RpcResponse fail(String requestId) {
         RpcResponse response = new RpcResponse();
         response.setCode(RpcResponseCodeEnum.FAIL.getCode());
         response.setMessage(RpcResponseCodeEnum.FAIL.getMessage());
+        response.setRequestId(requestId);
         return response;
     }
 }

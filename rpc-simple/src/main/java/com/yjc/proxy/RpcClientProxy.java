@@ -75,7 +75,7 @@ public class RpcClientProxy implements InvocationHandler {
         }
         if (rpcResponse.getCode() == null || rpcResponse.getCode().equals(RpcResponseCodeEnum.FAIL.getCode()))
         {
-            throw new RuntimeException("服务调用失败，serviceName: " + rpcRequest.getInterfaceName());
+            log.error(rpcResponse.getMessage());
         }
 
     }
