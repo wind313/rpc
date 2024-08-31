@@ -10,7 +10,10 @@ public class PingController {
     private PingService pingService;
     public void ping()
     {
-        System.out.println(pingService.ping());
+        for(int i = 0; i < 100; i++){
+            System.out.println(pingService.ping());
+        }
+
 
     }
 }

@@ -6,17 +6,18 @@ import com.yjc.enums.ServiceEnum;
 import com.yjc.extension.ExtensionLoader;
 import com.yjc.factory.SingletonFactory;
 import com.yjc.registry.ServiceDiscovery;
-import com.yjc.registry.impl.ServiceDiscoveryImpl;
 import com.yjc.retry.GuavaRetry;
 import com.yjc.transport.remoting.RpcSender;
 import com.yjc.transport.pojo.RpcRequest;
 import com.yjc.transport.pojo.RpcResponse;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
+
+@Slf4j
 public class RpcClientProxy implements InvocationHandler {
     private final RpcConfig rpcConfig;
     private final RpcSender rpcSender;
@@ -53,8 +54,17 @@ public class RpcClientProxy implements InvocationHandler {
 
         return rpcResponse.getData();
     }
-    private void check(RpcResponse rpcResponse, RpcRequest rpcRequest)
-    {
+    private void check(RpcResponse rpcResponse, RpcRequest rpcRequest) {
+        if (rpcResponse.getCode().equals(RpcResponseCodeEnum.SUCCESS.getCode()))
+        {
+            log.warn("服务调用成功: " + rpcRequest.getInterfaceName());
+            return;
+        }
+        if (rpcResponse.getCode().equals(RpcResponseCodeEnum.RATE_LIMIT.getCode()))
+        {
+            log.warn("服务限流: " + rpcRequest.getInterfaceName());
+            return;
+        }
         if (rpcResponse == null)
         {
             throw new RuntimeException("服务调用失败，serviceName: " + rpcRequest.getInterfaceName());
@@ -63,9 +73,10 @@ public class RpcClientProxy implements InvocationHandler {
         {
             throw new RuntimeException("请求与响应不匹配");
         }
-        if (rpcResponse.getCode() == null || !rpcResponse.getCode().equals(RpcResponseCodeEnum.SUCCESS.getCode()))
+        if (rpcResponse.getCode() == null || rpcResponse.getCode().equals(RpcResponseCodeEnum.FAIL.getCode()))
         {
             throw new RuntimeException("服务调用失败，serviceName: " + rpcRequest.getInterfaceName());
         }
+
     }
 }

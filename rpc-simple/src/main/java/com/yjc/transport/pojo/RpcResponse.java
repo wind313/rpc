@@ -5,12 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.Serializable;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
+@Slf4j
 public class RpcResponse implements Serializable {
     private static final long serialVersionUID = 15619401053L;
     private String requestId;
@@ -25,6 +28,7 @@ public class RpcResponse implements Serializable {
         if (null != data) {
             response.setData(data);
         }
+
         return response;
     }
     public static  RpcResponse fail(RpcResponseCodeEnum rpcResponseCodeEnum) {

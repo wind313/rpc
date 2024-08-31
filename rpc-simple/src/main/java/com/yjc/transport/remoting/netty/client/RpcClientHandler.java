@@ -32,7 +32,6 @@ public class RpcClientHandler extends ChannelInboundHandlerAdapter {
 
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         try {
-            log.info("客户端收到消息:[{}]", msg);
             if (msg instanceof RpcMessage) {
                 byte messageType = ((RpcMessage) msg).getMessageType();
                 if (messageType == RpcConstants.HEARTBEAT_RESPONSE_TYPE) {

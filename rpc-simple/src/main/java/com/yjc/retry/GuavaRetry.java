@@ -11,9 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class GuavaRetry {
-    private RpcSender rpcSender;
     public RpcResponse sendWithRetry(RpcRequest rpcRequest,RpcSender rpcSender){
-        this.rpcSender = rpcSender;
         Retryer<RpcResponse> retryer = RetryerBuilder.<RpcResponse>newBuilder()
                 .retryIfResult(result -> Objects.equals(result.getCode(), RpcResponseCodeEnum.FAIL.getCode()))
                 .retryIfException()
